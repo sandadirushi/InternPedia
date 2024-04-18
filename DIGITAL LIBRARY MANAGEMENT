@@ -1,0 +1,218 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+class Book 
+{
+    private String title;
+    private String author;
+    private int quantity;
+
+    public Book(String title, String author, int quantity)
+    {
+        this.title = title;
+        this.author = author;
+        this.quantity = quantity;
+    }
+
+    public String getTitle()
+    {
+        return title;
+    }
+
+    public String getAuthor()
+    {
+        return author;
+    }
+
+    public int getQuantity() 
+    {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity)
+    {
+        this.quantity = quantity;
+    }
+}
+
+class Library 
+{
+    private ArrayList<Book> books = new ArrayList<>();
+
+    public void addBook(Book book)
+    {
+        books.add(book);
+    }
+
+    public void displayBooks() 
+    {
+        if (books.isEmpty()) 
+        {
+            System.out.println("No books available in the library.");
+            return;
+        }
+
+        System.out.println("Available Books:");
+        for (Book book : books) {
+            System.out.println("Title: " + book.getTitle() + ", Author: " + book.getAuthor() + ", Quantity: " + book.getQuantity());
+        }
+    }
+
+    public Book findBook(String title)
+    {
+        for (Book book : books)
+        {
+            if (book.getTitle().equalsIgnoreCase(title)) 
+            {
+                return book;
+            }
+        }
+        return null;
+    }
+
+    public boolean issueBook(String title) 
+    {
+        Book book = findBook(title);
+        if (book != null && book.getQuantity() > 0)
+        {
+            book.setQuantity(book.getQuantity() - 1);
+            return true;
+        }
+        return false;
+    }
+
+    public void returnBook(String title) 
+    {
+        Book book = findBook(title);
+        if (book != null)
+        {
+            book.setQuantity(book.getQuantity() + 1);
+            System.out.println("Book returned successfully.");
+        } else {
+            System.out.println("Book not found.");
+        }
+    }
+}
+
+ public class Main
+ {
+    public static void main(String[] args) 
+    {
+        Library library = new Library();
+        Scanner scanner = new Scanner(System.in);
+        int choice;
+        do {
+            System.out.println("\nLibrary Management System");
+            System.out.println("1. Add Book");
+            System.out.println("2. Display Available Books");
+            System.out.println("3. Issue Book");
+            System.out.println("4. Return Book");
+            System.out.println("5. Exit");
+            System.out.print("Enter your choice: ");
+            choice = scanner.nextInt();
+            scanner.nextLine(); 
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter book title: ");
+                    String title = scanner.nextLine();
+                    System.out.print("Enter author name: ");
+                    String author = scanner.nextLine();
+                    System.out.print("Enter quantity: ");
+                    int quantity = scanner.nextInt();
+                    scanner.nextLine(); 
+                    library.addBook(new Book(title, author, quantity));
+                    System.out.println("Book added successfully.");
+                    break;
+                case 2:
+                    library.displayBooks();
+                    break;
+                case 3:
+                    System.out.print("Enter book title to issue: ");
+                    String issueTitle = scanner.nextLine();
+                    if (library.issueBook(issueTitle)) {
+                        System.out.println("Book issued successfully.");
+                    } else {
+                        System.out.println("Book not available.");
+                    }
+                    break;
+                case 4:
+                    System.out.print("Enter book title to return: ");
+                    String returnTitle = scanner.nextLine();
+                    library.returnBook(returnTitle);
+                    break;
+                case 5:
+                    System.out.println("Exiting...");
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+        } while (choice != 5);
+
+        scanner.close();
+    }
+}
+
+OUTPUT:
+Library Management System
+1. Add Book
+2. Display Available Books
+3. Issue Book
+4. Return Book
+5. Exit
+Enter your choice: 1
+Enter book title: DSA
+Enter author name: Koustubh
+Enter quantity: 980
+Book added successfully.
+Library Management System
+1. Add Book
+2. Display Available Books
+3. Issue Book
+4. Return Book
+5. Exit
+Enter your choice: 1
+Enter book title: Compiler design
+Enter author name: Gopal
+Enter quantity: 780
+Book added successfully.
+
+Library Management System
+1. Add Book
+2. Display Available Books
+3. Issue Book
+4. Return Book
+5. Exit
+Enter your choice: 2
+Available Books:
+Title: DSA, Author: Koustubh, Quantity: 980
+Title: Compiler design, Author: Gopal, Quantity: 780
+
+Library Management System
+1. Add Book
+2. Display Available Books
+3. Issue Book
+4. Return Book
+5. Exit
+Enter your choice: 3
+Enter book title to issue: DSA
+Book issued successfully.
+
+Library Management System
+1. Add Book
+2. Display Available Books
+3. Issue Book
+4. Return Book
+5. Exit
+Enter your choice: 4
+Enter book title to return: DSA
+Book returned successfully.
+
+Library Management System
+1. Add Book
+2. Display Available Books
+3. Issue Book
+4. Return Book
+5. Exit
+Enter your choice: 5
+Exiting...
