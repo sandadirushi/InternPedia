@@ -1,0 +1,175 @@
+import java.util.Scanner;
+
+class User
+{
+    private String name;
+    private String password;
+    private String profileDetails;
+
+    public User(String name, String password, String profileDetails)
+    {
+        this.name = name;
+        this.password = password;
+        this.profileDetails = profileDetails;
+    }
+
+    public String getName() 
+    {
+        return name;
+    }
+
+    public String getProfileDetails()
+    {
+        return profileDetails;
+    }
+
+    public boolean authenticate(String enteredName, String enteredPassword)
+    {
+        return name.equals(enteredName) && password.equals(enteredPassword.trim());
+    }
+
+    public void updateProfile(String newProfileDetails) 
+    {
+        this.profileDetails = newProfileDetails;
+    }
+
+    public void changePassword(String newPassword)
+    {
+        this.password = newPassword;
+    }
+}
+
+class Exam 
+{
+    private int totalQuestions;
+    private String[] questions;
+    private String[] correctAnswers;
+    private boolean[] userAnswers;
+
+    public Exam(int totalQuestions)
+    {
+        this.totalQuestions = totalQuestions;
+        questions = new String[totalQuestions];
+        correctAnswers = new String[totalQuestions];
+        userAnswers = new boolean[totalQuestions];
+    }
+
+    public void setQuestion(int questionNumber, String question, String correctAnswer)
+    {
+        questions[questionNumber] = question;
+        correctAnswers[questionNumber] = correctAnswer;
+    }
+
+    public void selectAnswer(int questionNumber, boolean isCorrect) 
+    {
+        userAnswers[questionNumber] = isCorrect;
+    }
+
+    public int getTotalQuestions()
+    {
+        return totalQuestions;
+    }
+
+    public boolean isAnswerCorrect(int questionNumber) 
+    {
+        return userAnswers[questionNumber];
+    }
+
+    public void displayQuestions()
+    {
+        for (int i = 0; i < totalQuestions; i++) 
+        {
+            System.out.println("Question " + (i + 1) + ": " + questions[i]);
+        }
+    }
+
+    public void displayResults()
+    {
+        int correctCount = 0;
+        for (int i = 0; i < totalQuestions; i++) 
+        {
+            System.out.println("Question " + (i + 1) + ": " + (userAnswers[i] ? "Correct" : "Incorrect"));
+            if (userAnswers[i])
+            {
+                correctCount++;
+            }
+        }
+        System.out.println("Total Correct Answers: " + correctCount + "/" + totalQuestions);
+    }
+}
+
+public class Main
+{
+    public static void main(String[] args) 
+    {
+        Scanner scanner = new Scanner(System.in);
+        User user = new User("rajesh", "1234", "Profile details");
+        Exam exam = new Exam(5);
+        exam.setQuestion(0, "What is the basic concept of OOP?", "Encapsulation");
+        exam.setQuestion(1, "What is the superclass of all classes in Java?", "Object");
+        exam.setQuestion(2, "Which keyword is used to define a constant in Java?", "final");
+        exam.setQuestion(3, "What is the output of 4 + 3 * 2?", "10");
+        exam.setQuestion(4, "Which collection class allows null values?", "HashMap");
+
+        boolean loggedIn = false;
+        do {
+            System.out.print(" Login:\n");
+            System.out.print("Enter username: ");
+            String username = scanner.nextLine();
+            System.out.print("Enter password: ");
+            String password = scanner.nextLine();
+
+            if (user.authenticate(username, password)) {
+                loggedIn = true;
+                System.out.println("Login successful, " + user.getName() + "!\n");
+            } 
+            else
+            {
+                System.out.println("Invalid username or password. Please try again.\n");
+            }
+        } 
+        while (!loggedIn);
+        System.out.println("selecting Answers for MCQs:");
+        exam.displayQuestions();
+        for (int i = 0; i < exam.getTotalQuestions(); i++)
+        {
+            System.out.print("Select answer for Question " + (i + 1) + " (true/false): ");
+            boolean answer = scanner.nextBoolean();
+            exam.selectAnswer(i, answer);
+        }
+        System.out.println("\nResults:");
+        exam.displayResults();
+        System.out.println("\n Closing Session and Logout:\nLogging out...");
+        scanner.close();
+    }
+}
+
+
+OUTPUT:
+
+Login:
+Enter username: rajesh
+Enter password: 1234
+Login successful, rajesh!
+
+selecting Answers for MCQs:
+Question 1: What is the basic concept of OOP?
+Question 2: What is the superclass of all classes in Java?
+Question 3: Which keyword is used to define a constant in Java?
+Question 4: What is the output of 4 + 3 * 2?
+Question 5: Which collection class allows null values?
+Select answer for Question 1 (true/false): true
+Select answer for Question 2 (true/false): true
+Select answer for Question 3 (true/false): true
+Select answer for Question 4 (true/false): true
+Select answer for Question 5 (true/false): true
+Results:
+Question 1: Correct
+Question 2: Correct
+Question 3: Correct
+Question 4: Correct
+Question 5: Correct
+Total Correct Answers: 5/5
+
+ Closing Session and Logout:
+Logging out...
